@@ -1,5 +1,6 @@
 import random as r
 import copy as c
+import matplotlib.pyplot as plt
 
 GENOM_LENGTH = 100
 POPULATION_LENGTH = 50
@@ -113,6 +114,8 @@ class Population:
     def run_simulation(self):
         """pass"""
         generation_number = 0
+        best_list = [self.get_best()]
+        mean_list = [self.get_sum() / POPULATION_LENGTH]
         print(f"Generation: {generation_number}")
         print(f"Best fitness: {self.get_best()}")
         print(f"Mean fitness: {self.get_sum() / POPULATION_LENGTH}\n")
@@ -121,11 +124,23 @@ class Population:
             self.tournament()
             self.crossing()
             self.mutate()
+
+            #Статистика
+            best = self.get_best()
+            mean = self.get_sum() / POPULATION_LENGTH
+            best_list.append(best)
+            mean_list.append(mean)
             print(f"Generation: {generation_number}")
-            print(f"Best fitness: {self.get_best()}")
+            print(f"Best fitness: {best}")
             print(f"Worst fitness: {self.get_worse()}")
-            print(f"Mean fitness: {self.get_sum() / POPULATION_LENGTH}\n")
+            print(f"Mean fitness: {mean}\n")
             generation_number += 1
+
+        #Графік
+        fig, ax = plt.subplots()
+        plt.plot(best_list, color="red")
+        plt.plot(mean_list, color="green")
+        plt.show()
 
 
 
